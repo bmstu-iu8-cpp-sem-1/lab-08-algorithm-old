@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include("tools/gate/cmake/HunterGate.cmake")
 
 huntergate(
-  URL "https://github.com/ruslo/hunter/archive/v0.23.31.tar.gz"
-  SHA1 "3d94b8522541c4c8eaac606f4c47d09322a8019c"
+  URL "https://github.com/ruslo/hunter/archive/v0.23.34.tar.gz"
+  SHA1 "70287b1ffa810ee4e952052a9adff9b4856d0d54"
 )
 
 project(template) # rename project and delete this comment

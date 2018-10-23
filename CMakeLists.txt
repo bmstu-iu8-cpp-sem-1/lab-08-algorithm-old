@@ -29,3 +29,10 @@ target_link_libraries(tests GTest::main)
 
 enable_testing()
 add_test(NAME unit_tests COMMAND tests) 
+
+list(APPEND CMAKE_MODULE_PATH "tools/codecov/cmake")
+list(APPEND LCOV_REMOVE_PATTERNS "'${CMAKE_CURRENT_SOURCE_DIR}/tests/*'")
+list(APPEND LCOV_REMOVE_PATTERNS "'${CMAKE_CURRENT_SOURCE_DIR}/tools/*'")
+include(Findcodecov)
+find_package(codecov)
+add_coverage(tests)

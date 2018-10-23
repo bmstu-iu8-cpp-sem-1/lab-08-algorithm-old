@@ -9,6 +9,7 @@ addons:
     packages:
     - libstdc++-7-dev
     - g++-7
+    - lcov
     update: true
 
 cache:
@@ -34,6 +35,9 @@ script:
 # tests
 - export CTEST_OUTPUT_ON_FAILURE=true
 - ./tools/polly/bin/polly --reconfig --test --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold"
+# coverage
+- ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --test --fwd ENABLE_COVERAGE=yes
+- ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target gcov
 # CMAKE_EXE_LINKER need to bugfix: https://stackoverflow.com/questions/50024731/ld-unrecognized-option-push-state-no-as-needed
 
 notifications:

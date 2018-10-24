@@ -25,6 +25,7 @@ before_install:
 - export CC=$CC_EVAL
 - pip install --user cpplint
 
+# CMAKE_EXE_LINKER need to bugfix: https://stackoverflow.com/questions/50024731/ld-unrecognized-option-push-state-no-as-needed
 script:
 - files=`find . -name "*.cpp" -or -name "*.hpp" -or -name ".h" | grep -v "./tools/*"`
 # sanitaizer check
@@ -43,7 +44,6 @@ script:
 # coverage deploy
 - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target lcov
 - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target lcov-genhtml
-# CMAKE_EXE_LINKER need to bugfix: https://stackoverflow.com/questions/50024731/ld-unrecognized-option-push-state-no-as-needed
 
 deploy:
   provider: pages

@@ -44,3 +44,11 @@ script:
 
 notifications:
   email: false
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  local_dir: _builds/gcc-Debug/lcov/html/selected_targets
+  github_token: $GITHUB_TOKEN # set in travis-ci.org dashboard
+  on:
+    branch: master

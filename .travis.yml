@@ -41,17 +41,6 @@ script:
 - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --test --fwd ENABLE_COVERAGE=yes
 - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target gcov
 - gcovr -r  .
-# coverage deploy
-- ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target lcov
-- ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target lcov-genhtml
-
-deploy:
-  provider: pages
-  skip_cleanup: true
-  local_dir: _builds/gcc-Debug/lcov/html/selected_targets
-  github_token: $GITHUB_TOKEN # set in travis-ci.org dashboard
-  on:
-    branch: master
 
 notifications:
   email: false

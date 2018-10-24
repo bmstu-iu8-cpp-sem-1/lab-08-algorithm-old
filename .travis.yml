@@ -10,6 +10,7 @@ addons:
     - libstdc++-7-dev
     - g++-7
     - lcov
+    - gcovr
     update: true
 
 cache:
@@ -38,6 +39,7 @@ script:
 # coverage
 - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --test --fwd ENABLE_COVERAGE=yes
 - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target gcov
+- gcovr -r  .
 # CMAKE_EXE_LINKER need to bugfix: https://stackoverflow.com/questions/50024731/ld-unrecognized-option-push-state-no-as-needed
 
 notifications:

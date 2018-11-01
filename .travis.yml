@@ -26,21 +26,26 @@ before_install:
 - pip install --user cpplint
 
 # CMAKE_EXE_LINKER need to bugfix: https://stackoverflow.com/questions/50024731/ld-unrecognized-option-push-state-no-as-needed
-script:
-- files=`find . -name "*.cpp" -or -name "*.hpp" -or -name ".h" | grep -v "./tools/*"`
-# sanitaizer check
-- ( for file in $files; do cpplint --filter=-runtime/references,-whitespace/braces,-whitespace/indent,-whitespace/comments $file || exit; done );
-- ./tools/polly/bin/polly --reconfig --toolchain sanitize-address --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold"
-# clang-check
-- ./tools/polly/bin/polly --reconfig --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold" CMAKE_EXPORT_COMPILE_COMMANDS=ON
-- ( for file in $files; do echo $file; clang-check -analyze $file -p _builds/default-Release || exit; done );
-# tests
-- export CTEST_OUTPUT_ON_FAILURE=true
-- ./tools/polly/bin/polly --reconfig --test --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold"
-# coverage logging
-- ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --test --fwd ENABLE_COVERAGE=yes
-- ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target gcov
-- gcovr -r  .
+jobs:
+  include:
+    - stage: tests
+      script:
+      - export CTEST_OUTPUT_ON_FAILURE=true
+      - ./tools/polly/bin/polly --reconfig --test --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold"
+      # coverage logging
+      - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --test --fwd ENABLE_COVERAGE=yes
+      - ./tools/polly/bin/polly --toolchain gcc --reconfig --config Debug --target gcov
+      - gcovr -r  .
+      
+    - stage: checks
+      script:
+      - files=`find . -name "*.cpp" -or -name "*.hpp" -or -name ".h" | grep -v "./tools/*"`
+      # sanitaizer check
+      - ( for file in $files; do cpplint --filter=-runtime/references,-whitespace/braces,-whitespace/indent,-whitespace/comments $file || exit; done );
+      - ./tools/polly/bin/polly --reconfig --toolchain sanitize-address --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold"
+      # clang-check
+      - ./tools/polly/bin/polly --reconfig --config Release --fwd CMAKE_EXE_LINKER="-fuse-ld=gold" CMAKE_EXPORT_COMPILE_COMMANDS=ON
+      - ( for file in $files; do echo $file; clang-check -analyze $file -p _builds/default-Release || exit; done );
 
 notifications:
   email: false

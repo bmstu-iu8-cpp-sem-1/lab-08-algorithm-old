@@ -1,6 +1,6 @@
-## Лабораторная работа 8
+# Лабораторная работа 8
 
-### Теоретическая справка
+## Теоретическая справка
 **Что такое алгоритмы STL?**
 
 Контейнеры STL представляли бы собой красивую выдумку, достаточно далёкую от
@@ -12,16 +12,18 @@
 алгоритмов, что для детального описания их всех не хватит и объёмной книги.
 В данной лабораторной работе вам предстоит ознакомиться лишь с некоторыми из них.
 
-**Использование алгоритмов STL**
+### Использование алгоритмов STL
 
-* `std::find` - функция ищет в диапазоне параметров `[first, last)` первый элемент, равный `value`
+#### `std::find`
+Функция `std::find` ищет в диапазоне параметров `[first, last)` первый элемент, равный `value`
     ```cpp
         template< class InputIt, class T >
         InputIt find( InputIt first, InputIt last, const T& value );
     ```    
 
 
-* `std::find_if` - находит позицию первого вхождения элемента, удовлетворяющего определенному условию,
+#### `std::find_if`
+Алгоритм `std::find_if` находит позицию первого вхождения элемента, удовлетворяющего определенному условию,
 в диапазоне `[first, last)`.
     ```cpp
     template<class InputIterator, class Predicate> 
@@ -51,7 +53,8 @@ else
   std::cout << *it2;
 ```
 
-* `std::count_if` - количество элементов в диапазоне `[first, last)`, удовлетворяющих определенному
+#### `std::count_if`
+С помощью `std::count_if` можно легко получить количество элементов в диапазоне `[first, last)`, удовлетворяющих определенному
 условию. Подсчитывает элементы, для которых предикат `pred` возвращает значение true. О том,
 что такое предикат, можно прочитать выше.
      ```cpp
@@ -73,7 +76,7 @@ auto count = std::count_if(v.begin(), v.end(), even);
 std::cout << count;
 ```
 
-* `std::transform` - применяет функцию к диапазону элементов и сохраняет результат в последовательности.
+#### `std::transform`
     ```cpp
        template <class InIter, class OutIter, class Funс>
 	   OutIter transform(InIter start, InIter end,
@@ -107,7 +110,8 @@ std::vector<int> v = {1, 3, 5, 6, 7, 8, 9};
 std::transform(v.begin(), v.end(), v.begin(), [](int a){ retunr a * a; });
 ```
 
-* `std::sort` - сортировка последовательности `[first, last)`.
+#### `std::sort`
+Сортировка последовательности `[first, last)`.
     ```cpp
        template<class RandomAccessIterator>
        void sort(
@@ -143,14 +147,15 @@ std::sort(v.begin(), v.end(), compare_length);
 ```
 
 
-* `std::any_of` - проверяет, что предикат `pred` возвращает значение `true` для хотя бы одного элемента
+#### `std::any_of`
+Данный алгоритм проверяет, что предикат `pred` возвращает значение `true` для **хотя бы** одного элемента
 в диапазоне `[first, last)`.
     ```cpp
        template< class InputIt, class UnaryPredicate >
        bool any_of(InputIt first, InputIt last, UnaryPredicate pred);
     ```
 
-**Что такое лямбда-функция?**
+### Что такое лямбда-функция?
 Лямбда-выражение (или просто лямбда) в `C++11` — это удобный способ определения анонимного
 объекта-функции непосредственно в месте его вызова или передачи в функцию в качестве аргумента.
 Если нужна функция, можно описать её лямбдой, а не описывать отдельную функцию, загромождая код.
@@ -174,3 +179,61 @@ std::sort(v.begin(), v.end(), compare_length);
 
 **Примеры, с которыми следует ознакомиться**
 * [Здесь](https://github.com/bmstu-iu8-cpp/cpp-beginner-2017/tree/master/lab8)
+
+
+## Задание
+Требуется все задания выполнить с использованием библиотеки `<algorithm>`.
+
+Пусть есть структура `Student`
+```cpp
+struct Student
+{
+  std::string Name;
+  std::string GroupId;
+  std::vector<unsigned> Ratings;
+  std::vector<std::string> Subjects;
+};
+```
+В поле `Ratings` представлены оценки по соответсвующему предмету из поля `Subjects`.
+Предположим есть список студентов `std::vector<Student> students`.
+Ваше задание состоит в реализации ряда функций. Все прототипы функций необходимо разместить
+в файле header.hpp.
+
+Реазилуйте функции, которые выполяют следующие действия с этим списком:
+* отсортирует всех студентов по именам. Прототип:
+```cpp
+void SortByName(std::vector<Student>&);
+```
+* отсортирует всех студентов по средней оценке;
+```cpp
+void SortByRating(std::vector<Student>&);
+```
+* вернет количество студентов имеющих неудовлетворительную оценку хотя бы по одному предмету;
+```cpp
+size_t CountTwoness(const std::vector<Student>&);
+```
+* определит, сколько студентов сдали все экзамены на 5.
+```cpp
+size_t CountExcellent(const std::vector<Student>&);
+```
+* создаст массив `std::vector<Student>`, в который войдут студенты имеющие отметку отлично, по предмету "Math";
+```cpp
+std::vector<Student> VectorMathExcellent(const std::vector<Student>&);
+```
+* вернет массив уникальных названий групп студентов из списка students
+```cpp
+std::vector<std::string> GroupsId(const std::vector<Student>&);
+```
+* сформирует список групп, т.е. создаст массив структур `Group`
+```cpp
+struct Group
+{
+    std::string Id;
+    std::vector<Student> Students;
+};
+```
+
+Прототип:
+```cpp
+std::vector<Group> Groups(const std::vector<Student>&);
+```

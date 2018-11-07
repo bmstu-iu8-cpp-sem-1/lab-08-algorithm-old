@@ -16,19 +16,22 @@
 
 #### `std::find`
 Функция `std::find` ищет в диапазоне параметров `[first, last)` первый элемент, равный `value`
-    ```cpp
-        template< class InputIt, class T >
-        InputIt find( InputIt first, InputIt last, const T& value );
-    ```    
+
+```cpp
+template< class InputIt, class T >
+InputIt find( InputIt first, InputIt last, const T& value );
+```    
 
 
 #### `std::find_if`
 Алгоритм `std::find_if` находит позицию первого вхождения элемента, удовлетворяющего определенному условию,
 в диапазоне `[first, last)`.
-    ```cpp
-    template<class InputIterator, class Predicate> 
-    InputIterator find_if(InputIterator first, InputIterator last, Predicate pred);
-    ```
+
+```cpp
+template<class InputIterator, class Predicate> 
+InputIterator find_if(InputIterator first, InputIterator last, Predicate pred);
+```
+    
 Параметр `pred` - определенный пользователем функция, объект функции или лямбда-выражение,
 определяющее условие, которое должно удовлетворяться искомым элементом. Предикат
 берет один аргумент и возвращает `true `(условие удовлетворено) или `false` (условие
@@ -57,13 +60,14 @@ else
 С помощью `std::count_if` можно легко получить количество элементов в диапазоне `[first, last)`, удовлетворяющих определенному
 условию. Подсчитывает элементы, для которых предикат `pred` возвращает значение true. О том,
 что такое предикат, можно прочитать выше.
-     ```cpp
-     template< class InputIt, class UnaryPredicate >
-     typename iterator_traits<InputIt>::difference_type
-     count_if(InputIt first, InputIt last, UnaryPredicate pred);
-     ```
+
+```cpp
+template< class InputIt, class UnaryPredicate >
+typename iterator_traits<InputIt>::difference_type
+count_if(InputIt first, InputIt last, UnaryPredicate pred);
+```
  
- **Задача**. Посчитать какое количество четных элементов в массиве
+**Задача**. Посчитать какое количество четных элементов в массиве
 ```cpp
 bool even(int a)
 {
@@ -77,14 +81,14 @@ std::cout << count;
 ```
 
 #### `std::transform`
-    ```cpp
-       template <class InIter, class OutIter, class Funс>
-	   OutIter transform(InIter start, InIter end,
-				    OutIter result, Func unaryfunc);
-       template <class InIter1, class InIter2, class OutIter, class Func>
-	    OutIter transform(InIter1 start1, InIter1 end1, InIter2 start2,
-				   OutIter result, Func binaryfunc);
-	```
+```cpp
+template <class InIter, class OutIter, class Funс>
+OutIter transform(InIter start, InIter end,
+		  OutIter result, Func unaryfunc);
+template <class InIter1, class InIter2, class OutIter, class Func>
+OutIter transform(InIter1 start1, InIter1 end1, InIter2 start2,
+		  OutIter result, Func binaryfunc);
+```
 Алгоритм `transform()` применяет функцию к диапазону элементов и сохраняет результат
 в последовательности, заданной параметром `result`. В первой форме диапазон задается
 параметрами `start` и `end`. Применяемая функция задается параметром `unaryfunc`. 
@@ -112,27 +116,23 @@ std::transform(v.begin(), v.end(), v.begin(), [](int a){ retunr a * a; });
 
 #### `std::sort`
 Сортировка последовательности `[first, last)`.
-    ```cpp
-       template<class RandomAccessIterator>
-       void sort(
-           RandomAccessIterator first, 
-           RandomAccessIterator last
-        );
-        template<class RandomAccessIterator, class Predicate>
-        void sort(
-           RandomAccessIterator first, 
-           RandomAccessIterator last, 
-           Predicate comp
-        );
-    ```
+```cpp
+template<class RandomAccessIterator>
+void sort(RandomAccessIterator first, 
+          RandomAccessIterator last);
+
+template<class RandomAccessIterator, class Predicate>
+void sort(RandomAccessIterator first, 
+          RandomAccessIterator last, 
+          Predicate comp);
+```
+
 Первая форма алгоритма использует дефолтный функтор сравнения, а вторая позволяет
 задать его самостоятельно.
 Компаратор(смотри вторую форму) — это определенный пользователем объект функции
 или лямбда-выражение, который как бы учит
-сортировать `sort`. Так, например, можно сортировать по:
-Кратности на 3.
-Четности или нечетности.
-Изменить сторону сортировки на — по убыванию.
+сортировать `sort`. Так, например, можно сортировать по: 
+кратности на 3, четности или нечетности, изменить сторону сортировки на — по убыванию.
 `sort` передает элементы компаратору, а компаратор проверяет их по вашему
 алгоритму и передает `true` или `false`.
 
@@ -150,10 +150,10 @@ std::sort(v.begin(), v.end(), compare_length);
 #### `std::any_of`
 Данный алгоритм проверяет, что предикат `pred` возвращает значение `true` для **хотя бы** одного элемента
 в диапазоне `[first, last)`.
-    ```cpp
-       template< class InputIt, class UnaryPredicate >
-       bool any_of(InputIt first, InputIt last, UnaryPredicate pred);
-    ```
+```cpp
+template< class InputIt, class UnaryPredicate >
+bool any_of(InputIt first, InputIt last, UnaryPredicate pred);
+```
 
 ### Что такое лямбда-функция?
 Лямбда-выражение (или просто лямбда) в `C++11` — это удобный способ определения анонимного
@@ -164,16 +164,16 @@ std::sort(v.begin(), v.end(), compare_length);
 прямо внутри какого-либо выражения.
 В этом примере лямбда-выражение передается в качестве аргумента функции `find_if`. 
 Лямбда-выражение возвращает значение `true`, если его параметром является четное число.
-    ```cpp
-       list<int> numbers; 
-       numbers.push_back(13);  
-       numbers.push_back(17);  
-       numbers.push_back(42);  
-       numbers.push_back(46);  
-       numbers.push_back(99);  
-       auto result = find_if(numbers.begin(), numbers.end(),
-                             [](int n){ return (n % 2) == 0; });
-    ```
+```cpp
+list<int> numbers; 
+numbers.push_back(13);  
+numbers.push_back(17);  
+numbers.push_back(42);  
+numbers.push_back(46);  
+numbers.push_back(99);  
+auto result = find_if(numbers.begin(), numbers.end(),
+                      [](int n){ return (n % 2) == 0; });
+```
 Для полного понимания того, как использовать лямбда- выражения, следует заглянуть 
 [сюда](https://msdn.microsoft.com/ru-ru/library/dd293599.aspx)
 
